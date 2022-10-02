@@ -1,2 +1,179 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+import pyttsx3 
+from ast import Delete
+from inspect import getargvalues
+from msilib.schema import Font
+from textwrap import fill
+from tkinter import*
+from turtle import width
+import tkinter.messagebox as msg
+import math as mm
+
+
+cal = Tk()
+cal.configure(bg="Light Blue")
+# pg = PhotoImage(file="download.png")
+# cal.iconphoto(True,pg)
+#voicecommand
+engine = pyttsx3.init()
+engine.setProperty("rate",150)
+
+
+cal.title("Calculator")
+cali = ("ArialBlack 10")
+cal.geometry("400x500")
+cal.minsize(300,300)
+cal.maxsize(300,350)
+# cal.maxsize(310,350)
+# cal.minsize(310,350)
+def exit():
+    engine.say("Exiting")
+    engine.runAndWait()
+    cal.destroy()
+
+menus = Menu(cal)
+m1 = Menu(menus,tearoff=0)
+m1.add_command(label="EXIT",command=exit)
+menus.add_cascade(label="Exit calculator",menu=m1)
+cal.config(menu=menus)
+
+#funtions
+def cub():
+    engine.say("Cube of number is")
+    engine.runAndWait()
+    ex = numdis.get()
+    k = int(ex)
+    g = k*k*k
+    numdis.delete(0,END)
+    numdis.insert(0,g)
+    engine.say(str(g))
+    engine.runAndWait()
+    
+def squr():
+    engine.say("Square of number is")
+    engine.runAndWait()
+    ex = numdis.get()
+    k = int(ex)
+    g = k*k
+    numdis.delete(0,END)
+    numdis.insert(0,g)
+    engine.say(str(g))    
+    engine.runAndWait()
+def facts():
+    engine.say("Factorial")
+    engine.runAndWait()
+    f=1
+    ex = numdis.get()
+    n = int(ex)
+    for i in range(1,n+1):
+        f = f*i
+  
+    numdis.delete(0,END)
+    numdis.insert(0,f)
+    engine.say(str(f))    
+    engine.runAndWait()
+def allc(event):
+   numdis.delete(0,END)
+   engine.say("All clear, Re nter") 
+   engine.runAndWait()
+
+def ocle(event):
+   f= numdis.get()
+   f = f[0: len(f)-1]
+   numdis.delete(0,END)
+   numdis.insert(0, f)  
+
+def play(event):
+    # print("Clicked")
+    b = event.widget
+    text = b['text']
+    
+       
+    if text=='=':
+        try:
+            n = numdis.get()
+            ans = eval(n)
+            numdis.delete(0,END)
+            numdis.insert(0,ans)
+            engine.say(str(ans))
+            engine.runAndWait()
+            
+        except Exception as w:
+            engine.say("Set an good expression")
+            engine.runAndWait()
+            numdis.delete(0,END)
+            msg.showerror("Error Message",w)
+        return 
+
+
+    numdis.insert(END,text)
+    
+
+#for titles
+# titlehead = Label(cal,text="CALCULATOR",font=cali,bg="White",pady=5)
+# titlehead.pack()
+#Entries
+numdis  = Entry(cal,bg="Light Blue",width=18,justify=CENTER,relief="solid",font="lucida 20")
+numdis.pack()
+#for frames
+frames = Frame(cal)
+frames.pack()
+#for Buttons
+names= 1
+for i in range(0,3): 
+    for j in range(0,3):
+        btn = Button(frames,text=names,width=5,padx=10,pady=10,font=cali,activebackground="#100F0F",activeforeground="#E2DCC8")
+        btn.grid(row=i,column=j)
+        
+        names =names+ 1
+        btn.bind("<Button-1>",play)
+       
+       
+#processing buttons        
+pbtns = Button(frames,text="+",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+pbtns.grid(row=0,column=3)
+mibtns = Button(frames,text="-",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+mibtns.grid(row=1,column=3)
+dbtns = Button(frames,text="/",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+dbtns.grid(row=2,column=3)
+mbtns = Button(frames,text="*",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+mbtns.grid(row=3,column=3)
+dotbtns = Button(frames,text=".",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+dotbtns.grid(row=3,column=1)
+
+#other buttons
+zbtns = Button(frames,text="0",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+zbtns.grid(row=3,column=2)
+ebtns = Button(frames,text="=",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+ebtns.grid(row=3,column=0)
+acbtns = Button(frames,text="AC",width=32,padx=10,pady=10,font=cali,activebackground="Red",activeforeground="Black")
+acbtns.grid(row=5,column=0,columnspan=4)
+bcbtns = Button(frames,text="<--",width=5,padx=10,pady=10,font=cali,activebackground="Light Blue",activeforeground="Black")
+bcbtns.grid(row=4,column=3)
+Fcbtns = Button(frames,text="!",width=5,padx=10,pady=10,font=cali,command=facts,activebackground="Light Blue",activeforeground="Black")
+Fcbtns.grid(row=4,column=1)
+Fcbtns = Button(frames,text="X^2",width=5,padx=10,pady=10,font=cali,command=squr,activebackground="Light Blue",activeforeground="Black")
+Fcbtns.grid(row=4,column=0)
+Fcbtns = Button(frames,text="X^3",width=5,padx=10,pady=10,font=cali,command=cub,activebackground="Light Blue",activeforeground="Black")
+Fcbtns.grid(row=4,column=2)
+# gcbtns = Button(frames,text="BY S.TYEEB",width=32,padx=10,pady=10,font=cali,bg="Grey",activebackground="Light Blue",activeforeground="Black")
+# gcbtns.grid(row=6,column=0,columnspan=4)
+#binding
+pbtns .bind("<Button-1>",play)
+mibtns.bind("<Button-1>",play)
+dbtns.bind("<Button-1>",play)
+mbtns.bind("<Button-1>",play)
+zbtns.bind("<Button-1>",play)
+ebtns.bind("<Button-1>",play)
+acbtns.bind("<Button-1>",allc)
+bcbtns.bind("<Button-1>",ocle)
+dotbtns.bind("<Button-1>",play)
+# Fcbtns.bind("<Button-1>",facts)
+def ret(hi):
+    # print("Clicked")
+    e = Event()
+    e.widget = ebtns
+    play(e)
+cal.bind('<Return>',ret)
+cal.mainloop()
