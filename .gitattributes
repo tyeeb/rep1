@@ -73,10 +73,7 @@ def facts():
     numdis.insert(0,f)
     engine.say(str(f))    
     engine.runAndWait()
-def allc(event):
-   numdis.delete(0,END)
-   engine.say("All clear, Re nter") 
-   engine.runAndWait()
+
 
 def ocle(event):
    f= numdis.get()
